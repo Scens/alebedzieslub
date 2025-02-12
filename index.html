@@ -10,239 +10,377 @@
             line-height: 1.6;
             margin: 0;
             padding: 0;
-            background: #f5f5f5;
-            color: #333;
+            background: #fff;
+            color: #000;
         }
 
         .container {
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
+            min-height: 100vh;
+            position: relative;
         }
 
-        header {
-            text-align: center;
-            padding: 40px 0;
+        .step-indicator {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #000;
+            font-size: 14px;
+        }
+
+        .form-step {
+            display: none;
             background: #fff;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 60px;
         }
 
-        h1 {
-            color: #2c3e50;
-            margin: 0;
-            font-size: 2.5em;
-        }
-
-        .form-container {
-            background: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
+        .form-step.active {
             display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
+        }
+
+        .question {
+            margin-bottom: 30px;
+        }
+
+        .question-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #000;
         }
 
         input[type="text"],
         input[type="email"],
-        select,
-        textarea {
+        input[type="number"] {
             width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
+            padding: 12px;
+            border: 2px solid #e6e6e6;
             border-radius: 4px;
+            font-size: 16px;
+            margin-top: 8px;
             box-sizing: border-box;
-            margin-bottom: 10px;
         }
 
-        textarea {
-            height: 100px;
-            resize: vertical;
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="number"]:focus {
+            border-color: #accbdd;
+            outline: none;
+        }
+
+        .radio-option {
+            display: block;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: #e6e6e6;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .radio-option:hover {
+            background: #accbdd;
+        }
+
+        .radio-option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .conditional-input {
+            margin-left: 20px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .navigation {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
         }
 
         button {
-            background: #2c3e50;
-            color: white;
-            padding: 10px 20px;
+            background: #accbdd;
+            color: #000;
             border: none;
+            padding: 12px 24px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
+            transition: background-color 0.3s;
         }
 
         button:hover {
-            background: #34495e;
+            background: #8fb3cc;
         }
 
         button:disabled {
-            background: #ccc;
+            background: #e6e6e6;
             cursor: not-allowed;
         }
 
-        .radio-group {
-            margin: 10px 0;
+        button.prev {
+            background: #e6e6e6;
         }
 
-        .radio-group label {
-            font-weight: normal;
-            display: inline-block;
-            margin-right: 20px;
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
         }
 
         .success-message {
             display: none;
-            background: #4CAF50;
-            color: white;
-            padding: 15px;
-            border-radius: 4px;
-            margin-top: 20px;
             text-align: center;
-        }
-
-        .error-message {
-            display: none;
-            background: #f44336;
-            color: white;
-            padding: 15px;
-            border-radius: 4px;
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                padding: 10px;
-            }
-
-            header {
-                padding: 20px 0;
-            }
-
-            h1 {
-                font-size: 2em;
-            }
+            padding: 40px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <header>
-        <h1>Ankieta Ślubna</h1>
-        <p>Prosimy o wypełnienie krótkiej ankiety</p>
-    </header>
+    <div class="step-indicator">Krok <span id="currentStep">1</span>/7</div>
 
-    <div class="form-container">
-        <form id="weddingForm">
-            <div class="form-group">
-                <label for="name">Imię i Nazwisko:</label>
-                <input type="text" id="name" name="name" required>
+    <form id="weddingForm">
+        <!-- Krok 1 -->
+        <div class="form-step active" data-step="1">
+            <div class="question">
+                <div class="question-title">1. Imię i Nazwisko</div>
+                <input type="text" name="name" required>
+                <div class="error-message">To pole jest wymagane</div>
             </div>
-
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
+            <div class="navigation">
+                <button type="button" class="next">Dalej</button>
             </div>
+        </div>
 
-            <div class="form-group">
-                <label>Czy będziesz uczestniczyć w naszym ślubie?</label>
-                <div class="radio-group">
-                    <label>
-                        <input type="radio" name="attendance" value="tak" required> Tak
-                    </label>
-                    <label>
-                        <input type="radio" name="attendance" value="nie"> Nie
-                    </label>
-                    <label>
-                        <input type="radio" name="attendance" value="moze"> Jeszcze nie wiem
-                    </label>
+        <!-- Krok 2 -->
+        <div class="form-step" data-step="2">
+            <div class="question">
+                <div class="question-title">2. Czy przybędziesz na nasze wesele?</div>
+                <label class="radio-option">
+                    <input type="radio" name="attendance" value="tak" required> Tak
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="attendance" value="nie"> Nie
+                </label>
+            </div>
+            <div class="navigation">
+                <button type="button" class="prev">Wstecz</button>
+                <button type="button" class="next">Dalej</button>
+            </div>
+        </div>
+
+        <!-- Krok 3 -->
+        <div class="form-step" data-step="3">
+            <div class="question">
+                <div class="question-title">3. Czy przybędziesz z osobą towarzyszącą?</div>
+                <label class="radio-option">
+                    <input type="radio" name="withCompanion" value="tak" required> Tak
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="withCompanion" value="nie"> Nie
+                </label>
+                <div class="conditional-input" id="companionNameInput">
+                    <input type="text" name="companionName" placeholder="Imię i nazwisko osoby towarzyszącej">
                 </div>
             </div>
-
-            <div class="form-group">
-                <label for="guests">Liczba osób towarzyszących:</label>
-                <select id="guests" name="guests" required>
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                </select>
+            <div class="navigation">
+                <button type="button" class="prev">Wstecz</button>
+                <button type="button" class="next">Dalej</button>
             </div>
-
-            <div class="form-group">
-                <label for="diet">Preferencje żywieniowe (np. wegetariańskie, wegańskie, alergie):</label>
-                <textarea id="diet" name="diet"></textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="song">Jaka piosenka powinna zagrać na weselu?</label>
-                <input type="text" id="song" name="song">
-            </div>
-
-            <div class="form-group">
-                <label for="message">Dodatkowe uwagi:</label>
-                <textarea id="message" name="message"></textarea>
-            </div>
-
-            <button type="submit">Wyślij odpowiedź</button>
-        </form>
-        <div id="successMessage" class="success-message">
-            Dziękujemy za wypełnienie ankiety!
         </div>
-        <div id="errorMessage" class="error-message">
-            Wystąpił błąd podczas wysyłania formularza. Prosimy spróbować ponownie.
+
+        <!-- Krok 4 -->
+        <div class="form-step" data-step="4">
+            <div class="question">
+                <div class="question-title">4. Czy na weselu pojawisz się z dziećmi?</div>
+                <label class="radio-option">
+                    <input type="radio" name="withChildren" value="tak" required> Tak
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="withChildren" value="nie"> Nie
+                </label>
+                <div class="conditional-input" id="childrenCountInput">
+                    <input type="number" name="childrenCount" placeholder="Podaj liczbę dzieci" min="1" max="10">
+                </div>
+            </div>
+            <div class="navigation">
+                <button type="button" class="prev">Wstecz</button>
+                <button type="button" class="next">Dalej</button>
+            </div>
         </div>
+
+        <!-- Krok 5 -->
+        <div class="form-step" data-step="5">
+            <div class="question">
+                <div class="question-title">5. Czy potrzebujesz transportu z kościoła do Żarnowca (miejsce wesela)?
+                </div>
+                <label class="radio-option">
+                    <input type="radio" name="transportToVenue" value="tak" required> Tak
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="transportToVenue" value="nie"> Nie
+                </label>
+                <div class="conditional-input" id="transportToVenueCount">
+                    <input type="number" name="transportToVenuePersons" placeholder="Dla ilu osób?" min="1" max="10">
+                </div>
+            </div>
+            <div class="navigation">
+                <button type="button" class="prev">Wstecz</button>
+                <button type="button" class="next">Dalej</button>
+            </div>
+        </div>
+
+        <!-- Krok 6 -->
+        <div class="form-step" data-step="6">
+            <div class="question">
+                <div class="question-title">6. Czy potrzebujesz transportu z Żarnowca (miejsce wesela) do Trójmiasta?
+                </div>
+                <label class="radio-option">
+                    <input type="radio" name="transportFromVenue" value="tak" required> Tak
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="transportFromVenue" value="nie"> Nie
+                </label>
+                <div class="conditional-input" id="transportFromVenueCount">
+                    <input type="number" name="transportFromVenuePersons" placeholder="Dla ilu osób?" min="1" max="10">
+                </div>
+            </div>
+            <div class="navigation">
+                <button type="button" class="prev">Wstecz</button>
+                <button type="button" class="next">Dalej</button>
+            </div>
+        </div>
+
+        <!-- Krok 7 -->
+        <div class="form-step" data-step="7">
+            <div class="question">
+                <div class="question-title">7. Czy potrzebujesz noclegu w Żarnowcu po przyjęciu weselnym?</div>
+                <label class="radio-option">
+                    <input type="radio" name="accommodation" value="tak" required> Tak
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="accommodation" value="nie"> Nie
+                </label>
+                <div class="conditional-input" id="accommodationCount">
+                    <input type="number" name="accommodationPersons" placeholder="Dla ilu osób?" min="1" max="10">
+                </div>
+            </div>
+            <div class="navigation">
+                <button type="button" class="prev">Wstecz</button>
+                <button type="submit">Wyślij</button>
+            </div>
+        </div>
+    </form>
+
+    <div id="successMessage" class="success-message">
+        <h2>Dziękujemy za wypełnienie formularza!</h2>
+        <p>Już nie możemy się doczekać na wspólne świętowanie!</p>
     </div>
 </div>
 
 <script>
-    document.getElementById('weddingForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
+    document.addEventListener('DOMContentLoaded', function () {
+        let currentStep = 1;
+        const form = document.getElementById('weddingForm');
+        const steps = document.querySelectorAll('.form-step');
+        const stepIndicator = document.getElementById('currentStep');
 
-        const button = this.querySelector('button');
-        button.disabled = true;
-        button.textContent = 'Wysyłanie...';
+        // Obsługa warunkowych pól
+        const conditionalFields = {
+            'withCompanion': 'companionNameInput',
+            'withChildren': 'childrenCountInput',
+            'transportToVenue': 'transportToVenueCount',
+            'transportFromVenue': 'transportFromVenueCount',
+            'accommodation': 'accommodationCount'
+        };
 
-        const formData = new FormData(this);
-        const data = {};
-        formData.forEach((value, key) => data[key] = value);
+        // Pokazywanie/ukrywanie warunkowych pól
+        Object.keys(conditionalFields).forEach(fieldName => {
+            const radioButtons = document.querySelectorAll(`input[name="${fieldName}"]`);
+            radioButtons.forEach(radio => {
+                radio.addEventListener('change', function () {
+                    const conditionalInput = document.getElementById(conditionalFields[fieldName]);
+                    conditionalInput.style.display = this.value === 'tak' ? 'block' : 'none';
+                });
+            });
+        });
 
-        try {
-            const response = await fetch('https://script.google.com/macros/s/AKfycbzdkKSl2BYRu3RFmyxPu6PxuDNg5i87gpQyZxsnrgUCzOhQCneVrqsyP2zWOVKGtZmZ/exec', {
-                redirect: 'follow',
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'text/plain;charset=utf-8',
-                },
-                body: JSON.stringify(data)
+        // Nawigacja między krokami
+        document.querySelectorAll('.next').forEach(button => {
+            button.addEventListener('click', () => {
+                if (validateStep(currentStep)) {
+                    showStep(currentStep + 1);
+                }
+            });
+        });
+
+        document.querySelectorAll('.prev').forEach(button => {
+            button.addEventListener('click', () => showStep(currentStep - 1));
+        });
+
+        function showStep(step) {
+            steps.forEach(s => s.classList.remove('active'));
+            document.querySelector(`[data-step="${step}"]`).classList.add('active');
+            currentStep = step;
+            stepIndicator.textContent = step;
+        }
+
+        function validateStep(step) {
+            const currentStepElement = document.querySelector(`[data-step="${step}"]`);
+            const requiredFields = currentStepElement.querySelectorAll('[required]');
+            let isValid = true;
+
+            requiredFields.forEach(field => {
+                if (!field.value) {
+                    isValid = false;
+                    field.closest('.question').querySelector('.error-message').style.display = 'block';
+                } else {
+                    field.closest('.question').querySelector('.error-message').style.display = 'none';
+                }
             });
 
-            const result = await response.json();
-
-            if (result.status === 'success') {
-                document.getElementById('successMessage').style.display = 'block';
-                document.getElementById('errorMessage').style.display = 'none';
-                this.reset();
-            } else {
-                throw new Error(result.message || 'Wystąpił błąd podczas wysyłania formularza');
-            }
-        } catch (error) {
-            document.getElementById('errorMessage').style.display = 'block';
-            document.getElementById('successMessage').style.display = 'none';
-            console.error('Error:', error);
-        } finally {
-            button.disabled = false;
-            button.textContent = 'Wyślij odpowiedź';
+            return isValid;
         }
+
+        // Obsługa wysyłania formularza
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const data = {};
+            formData.forEach((value, key) => data[key] = value);
+
+            try {
+                const response = await fetch('https://script.google.com/macros/s/AKfycbzdkKSl2BYRu3RFmyxPu6PxuDNg5i87gpQyZxsnrgUCzOhQCneVrqsyP2zWOVKGtZmZ/exec', {
+                    redirect: 'follow',
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain;charset=utf-8',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    form.style.display = 'none';
+                    document.getElementById('successMessage').style.display = 'block';
+                } else {
+                    throw new Error(result.message || 'Wystąpił błąd podczas wysyłania formularza');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Wystąpił błąd podczas wysyłania formularza. Prosimy spróbować ponownie.');
+            }
+        });
     });
 </script>
 </body>
