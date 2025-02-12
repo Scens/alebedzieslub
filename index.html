@@ -144,19 +144,19 @@
         <form id="weddingForm">
             <div class="form-group">
                 <label for="name">Imię i Nazwisko:</label>
-                <input type="text" id="name" name="name" >
+                <input type="text" id="name" name="name" required>
             </div>
 
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email" >
+                <input type="email" id="email" name="email" required>
             </div>
 
             <div class="form-group">
                 <label>Czy będziesz uczestniczyć w naszym ślubie?</label>
                 <div class="radio-group">
                     <label>
-                        <input type="radio" name="attendance" value="tak" > Tak
+                        <input type="radio" name="attendance" value="tak" required> Tak
                     </label>
                     <label>
                         <input type="radio" name="attendance" value="nie"> Nie
@@ -169,7 +169,7 @@
 
             <div class="form-group">
                 <label for="guests">Liczba osób towarzyszących:</label>
-                <select id="guests" name="guests" >
+                <select id="guests" name="guests" required>
                     <option value="0">0</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
