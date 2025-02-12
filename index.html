@@ -83,6 +83,11 @@
             background: #34495e;
         }
 
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
         .radio-group {
             margin: 10px 0;
         }
@@ -212,11 +217,11 @@
         formData.forEach((value, key) => data[key] = value);
 
         try {
-            const response = await fetch('https://script.google.com/macros/s/AKfycbzLkl2I8YpxLOVTgEswG0WhSb7ibrPCQzgQnV0rRJPVupG5KBsUBSAfxawS760uxjIA/exec', {
+            const response = await fetch('https://script.google.com/macros/s/AKfycbzdkKSl2BYRu3RFmyxPu6PxuDNg5i87gpQyZxsnrgUCzOhQCneVrqsyP2zWOVKGtZmZ/exec', {
+                redirect: 'follow',
                 method: 'POST',
-                mode: 'cors',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'text/plain;charset=utf-8',
                 },
                 body: JSON.stringify(data)
             });
@@ -230,11 +235,13 @@
             } else {
                 throw new Error(result.message || 'Wystąpił błąd podczas wysyłania formularza');
             }
-
         } catch (error) {
             document.getElementById('errorMessage').style.display = 'block';
             document.getElementById('successMessage').style.display = 'none';
             console.error('Error:', error);
+        } finally {
+            button.disabled = false;
+            button.textContent = 'Wyślij odpowiedź';
         }
     });
 </script>
