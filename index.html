@@ -208,12 +208,16 @@
         formData.forEach((value, key) => data[key] = value);
 
         try {
-            const response = await fetch('https://script.google.com/macros/s/AKfycbwbuhNSEscb_mDAJTXXGMNi8r03gTbgWttDQqqN8p1g5ss4WO0rDkXmVygB9PgLJ4EB/exec', {
-                method: 'POST',
-                body: JSON.stringify(data),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+            const url = new URL('https://script.google.com/macros/s/AKfycbweVhIA1R__nrk8fEo9EvsgVqtDI-nAxr8oBbLi1EIU_Eg0LiOFezGoRKP7QHD_J-BR/exec');
+
+            // Dodaj parametry jako część URL
+            const params = new URLSearchParams(data);
+            url.search = params.toString();
+
+            // Wykonaj request
+            const response = await fetch(url, {
+                method: 'GET',
+                mode: 'no-cors'
             });
 
             if (response.ok) {
