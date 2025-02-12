@@ -139,19 +139,19 @@
         <form id="weddingForm">
             <div class="form-group">
                 <label for="name">Imię i Nazwisko:</label>
-                <input type="text" id="name" name="name" required>
+                <input type="text" id="name" name="name" >
             </div>
 
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="email" >
             </div>
 
             <div class="form-group">
                 <label>Czy będziesz uczestniczyć w naszym ślubie?</label>
                 <div class="radio-group">
                     <label>
-                        <input type="radio" name="attendance" value="tak" required> Tak
+                        <input type="radio" name="attendance" value="tak" > Tak
                     </label>
                     <label>
                         <input type="radio" name="attendance" value="nie"> Nie
@@ -164,7 +164,7 @@
 
             <div class="form-group">
                 <label for="guests">Liczba osób towarzyszących:</label>
-                <select id="guests" name="guests" required>
+                <select id="guests" name="guests" >
                     <option value="0">0</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -203,30 +203,34 @@
     document.getElementById('weddingForm').addEventListener('submit', async function(e) {
         e.preventDefault();
 
+        const button = this.querySelector('button');
+        button.disabled = true;
+        button.textContent = 'Wysyłanie...';
+
         const formData = new FormData(this);
         const data = {};
         formData.forEach((value, key) => data[key] = value);
 
         try {
-            const url = new URL('https://script.google.com/macros/s/AKfycbweVhIA1R__nrk8fEo9EvsgVqtDI-nAxr8oBbLi1EIU_Eg0LiOFezGoRKP7QHD_J-BR/exec');
-
-            // Dodaj parametry jako część URL
-            const params = new URLSearchParams(data);
-            url.search = params.toString();
-
-            // Wykonaj request
-            const response = await fetch(url, {
-                method: 'GET',
-                mode: 'no-cors'
+            const response = await fetch('https://script.google.com/macros/s/AKfycbzLkl2I8YpxLOVTgEswG0WhSb7ibrPCQzgQnV0rRJPVupG5KBsUBSAfxawS760uxjIA/exec', {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
             });
 
-            if (response.ok) {
+            const result = await response.json();
+
+            if (result.status === 'success') {
                 document.getElementById('successMessage').style.display = 'block';
                 document.getElementById('errorMessage').style.display = 'none';
                 this.reset();
             } else {
-                throw new Error('Network response was not ok');
+                throw new Error(result.message || 'Wystąpił błąd podczas wysyłania formularza');
             }
+
         } catch (error) {
             document.getElementById('errorMessage').style.display = 'block';
             document.getElementById('successMessage').style.display = 'none';
