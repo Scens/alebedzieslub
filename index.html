@@ -414,10 +414,11 @@
 
     class WeddingForm {
         constructor() {
-            this.currentStep = 1;
+            this.currentStepCounter = 1;
             this.form = document.getElementById('weddingForm');
             this.steps = document.querySelectorAll('.form-step');
-            this.stepIndicator = document.getElementById('currentStep');
+            this.currentStep = document.getElementById('currentStep');
+            this.stepIndicator = document.getElementById('stepIndicator');
             this.progressBar = document.getElementById('progressBar');
             this.regretMessage = document.getElementById('regretMessage');
             this.submitEarlyButton = document.getElementById('submitEarly');
@@ -434,7 +435,7 @@
             });
 
             document.querySelectorAll('.prev').forEach(button => {
-                button.addEventListener('click', () => this.showStep(this.currentStep - 1));
+                button.addEventListener('click', () => this.showStep(this.currentStepCounter - 1));
             });
 
             // Attendance radio buttons
@@ -509,7 +510,7 @@
         handleAttendanceChange(event) {
             const isNotComing = event.target.value === 'nie';
 
-            if (this.currentStep === 2) {
+            if (this.currentStepCounter === 2) {
                 this.regretMessage.style.display = isNotComing ? 'block' : 'none';
                 const nextButton = this.steps[1].querySelector('.next');
                 if (nextButton) nextButton.style.display = isNotComing ? 'none' : 'block';
@@ -573,8 +574,8 @@
         }
 
         handleNextClick() {
-            if (this.validateStep(this.currentStep)) {
-                this.showStep(this.currentStep + 1);
+            if (this.validateStep(this.currentStepCounter)) {
+                this.showStep(this.currentStepCounter + 1);
             }
         }
 
@@ -627,14 +628,14 @@
 
             if (nextStep) {
                 nextStep.classList.add('active');
-                this.currentStep = step;
+                this.currentStepCounter = step;
                 this.updateProgress(step);
             }
         }
 
         updateProgress(step) {
-            if (this.stepIndicator) {
-                this.stepIndicator.textContent = step;
+            if (this.currentStep) {
+                this.currentStep.textContent = step;
             }
 
             if (this.progressBar) {
