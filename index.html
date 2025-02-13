@@ -12,7 +12,7 @@
             padding: 0;
             background: #fff;
             color: #000;
-
+            /* Added display flex for centering */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -28,11 +28,12 @@
         }
 
         .step-indicator {
-            position: absolute;
+            position: fixed;
             top: 20px;
             right: 20px;
             color: #000;
             font-size: 14px;
+            padding: 5px 10px;
         }
 
         .form-step {
@@ -41,7 +42,7 @@
             padding: 40px;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            margin-top: 60px;
+            margin-top: 0;
         }
 
         .form-step.active {
@@ -156,7 +157,7 @@
         <!-- Step 1 -->
         <div class="form-step active" data-step="1">
             <div class="question">
-                <div class="question-title">1. Imię i Nazwisko</div>
+                <div class="question-title">Imię i nazwisko</div>
                 <input type="text" name="name" required>
                 <div class="error-message">To pole jest wymagane</div>
             </div>
@@ -168,7 +169,7 @@
         <!-- Step 2 -->
         <div class="form-step" data-step="2">
             <div class="question">
-                <div class="question-title">2. Czy przybędziesz na nasze wesele?</div>
+                <div class="question-title">Czy przybędziesz na nasze wesele?</div>
                 <label class="radio-option">
                     <input type="radio" name="attendance" value="tak" required> Tak
                 </label>
@@ -191,7 +192,7 @@
         <!-- Step 3 -->
         <div class="form-step" data-step="3">
             <div class="question">
-                <div class="question-title">3. Czy przybędziesz z osobą towarzyszącą?</div>
+                <div class="question-title">Czy przybędziesz z osobą towarzyszącą?</div>
                 <label class="radio-option">
                     <input type="radio" name="withCompanion" value="tak" required> Tak
                 </label>
@@ -212,7 +213,7 @@
         <!-- Step 4 -->
         <div class="form-step" data-step="4">
             <div class="question">
-                <div class="question-title">4. Czy na weselu pojawisz się z dziećmi?</div>
+                <div class="question-title">Czy na weselu pojawisz się z dziećmi?</div>
                 <label class="radio-option">
                     <input type="radio" name="withChildren" value="tak" required> Tak
                 </label>
@@ -233,7 +234,7 @@
         <!-- Step 5 -->
         <div class="form-step" data-step="5">
             <div class="question">
-                <div class="question-title">5. Czy potrzebujesz transportu z kościoła do Żarnowca (miejsce wesela)?
+                <div class="question-title">Czy potrzebujesz transportu z kościoła do Żarnowca (miejsce wesela)?
                 </div>
                 <label class="radio-option">
                     <input type="radio" name="transportToVenue" value="tak" required> Tak
@@ -255,7 +256,7 @@
         <!-- Step 6 -->
         <div class="form-step" data-step="6">
             <div class="question">
-                <div class="question-title">6. Czy potrzebujesz transportu z Żarnowca (miejsce wesela) do Trójmiasta?
+                <div class="question-title">Czy potrzebujesz transportu z Żarnowca (miejsce wesela) do Trójmiasta?
                 </div>
                 <label class="radio-option">
                     <input type="radio" name="transportFromVenue" value="tak" required> Tak
@@ -277,7 +278,7 @@
         <!-- Step 7 -->
         <div class="form-step" data-step="7">
             <div class="question">
-                <div class="question-title">7. Czy potrzebujesz noclegu w Żarnowcu po przyjęciu weselnym?</div>
+                <div class="question-title">Czy potrzebujesz noclegu w Żarnowcu po przyjęciu weselnym?</div>
                 <label class="radio-option">
                     <input type="radio" name="accommodation" value="tak" required> Tak
                 </label>
