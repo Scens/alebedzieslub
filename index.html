@@ -324,158 +324,194 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            let currentStep = 1;
-            const form = document.getElementById('weddingForm');
-            const steps = document.querySelectorAll('.form-step');
-            const stepIndicator = document.getElementById('currentStep');
-
-            const conditionalFields = {
+        // Config object for form settings
+        const CONFIG = {
+            TOTAL_STEPS: 7,
+            API_URL: 'https://script.google.com/macros/s/AKfycby75fM0asUlTu_onLOLxMHD4r6FOzMNgT7UyZUKGQO5JyAXNaOkQjpReFWaSZrXNENm/exec',
+            CONDITIONAL_FIELDS: {
                 'withCompanion': 'companionNameInput',
                 'withChildren': 'childrenCountInput',
                 'transportToVenue': 'transportToVenueCount',
                 'transportFromVenue': 'transportFromVenueCount',
                 'accommodation': 'accommodationCount'
-            };
+            }
+        };
 
-            // Show/hide conditional fields
-            Object.keys(conditionalFields).forEach(fieldName => {
-                const radioButtons = document.querySelectorAll(`input[name="${fieldName}"]`);
-                radioButtons?.forEach(radio => {
-                    radio?.addEventListener('change', function () {
-                        const conditionalInput = document.getElementById(conditionalFields[fieldName]);
-                        if (conditionalInput) {
-                            conditionalInput.style.display = this.value === 'tak' ? 'block' : 'none';
-                        }
+        class WeddingForm {
+            constructor() {
+                this.currentStep = 1;
+                this.form = document.getElementById('weddingForm');
+                this.steps = document.querySelectorAll('.form-step');
+                this.stepIndicator = document.getElementById('currentStep');
+                this.progressBar = document.getElementById('progressBar');
+                this.regretMessage = document.getElementById('regretMessage');
+                this.submitEarlyButton = document.getElementById('submitEarly');
+
+                this.initializeEventListeners();
+                this.initializeConditionalFields();
+            }
+
+            initializeEventListeners() {
+                // Navigation buttons
+                document.querySelectorAll('.next').forEach(button => {
+                    button.addEventListener('click', () => this.handleNextClick());
+                });
+
+                document.querySelectorAll('.prev').forEach(button => {
+                    button.addEventListener('click', () => this.showStep(this.currentStep - 1));
+                });
+
+                // Attendance radio buttons
+                document.querySelectorAll('input[name="attendance"]').forEach(radio => {
+                    radio.addEventListener('change', (e) => this.handleAttendanceChange(e));
+                });
+
+                // Form submission
+                this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+                if (this.submitEarlyButton) {
+                    this.submitEarlyButton.addEventListener('click', (e) => this.handleSubmit(e));
+                }
+            }
+
+            initializeConditionalFields() {
+                Object.entries(CONFIG.CONDITIONAL_FIELDS).forEach(([fieldName, inputId]) => {
+                    const radioButtons = document.querySelectorAll(`input[name="${fieldName}"]`);
+                    radioButtons.forEach(radio => {
+                        radio.addEventListener('change', (e) => this.toggleConditionalField(inputId, e.target.value));
                     });
                 });
-            });
+            }
 
-            // Handle attendance radio change
-            const attendanceRadios = document.querySelectorAll('input[name="attendance"]');
-            const regretMessage = document.getElementById('regretMessage');
-            const submitEarlyButton = document.getElementById('submitEarly');
-            const nextButtons = document.querySelectorAll('.next');
+            toggleConditionalField(inputId, value) {
+                const conditionalInput = document.getElementById(inputId);
+                if (conditionalInput) {
+                    conditionalInput.style.display = value === 'tak' ? 'block' : 'none';
 
-            attendanceRadios?.forEach(radio => {
-                radio?.addEventListener('change', function () {
-                    if (this.value === 'nie' && currentStep === 2) {
-                        regretMessage?.style && (regretMessage.style.display = 'block');
-                        nextButtons[1]?.style && (nextButtons[1].style.display = 'none');
-                        submitEarlyButton?.style && (submitEarlyButton.style.display = 'block');
-                    } else if (this.value === 'tak' && currentStep === 2) {
-                        regretMessage?.style && (regretMessage.style.display = 'none');
-                        nextButtons[1]?.style && (nextButtons[1].style.display = 'block');
-                        submitEarlyButton?.style && (submitEarlyButton.style.display = 'none');
-                    }
-                });
-            });
-
-            // Navigation between steps
-            document.querySelectorAll('.next')?.forEach(button => {
-                button?.addEventListener('click', () => {
-                    if (validateStep(currentStep)) {
-                        showStep(currentStep + 1);
-                    }
-                });
-            });
-
-            document.querySelectorAll('.prev')?.forEach(button => {
-                button?.addEventListener('click', () => showStep(currentStep - 1));
-            });
-
-            function showStep(step) {
-                steps?.forEach(s => s.classList.remove('active'));
-                const nextStep = document.querySelector(`[data-step="${step}"]`);
-                if (nextStep) {
-                    nextStep.classList.add('active');
-                    currentStep = step;
-                    if (stepIndicator) {
-                        stepIndicator.textContent = step;
-                    }
-
-                    // Update progress bar
-                    const progressBar = document.getElementById('progressBar');
-                    if (progressBar) {
-                        const progress = (step / 8) * 100;
-                        progressBar.style.width = `${progress}%`;
+                    // Clear input value when hiding
+                    if (value !== 'tak') {
+                        const input = conditionalInput.querySelector('input');
+                        if (input) input.value = '';
                     }
                 }
             }
 
-            function validateStep(step) {
+            handleAttendanceChange(event) {
+                const isNotComing = event.target.value === 'nie';
+
+                if (this.currentStep === 2) {
+                    this.regretMessage.style.display = isNotComing ? 'block' : 'none';
+                    const nextButton = this.steps[1].querySelector('.next');
+                    if (nextButton) nextButton.style.display = isNotComing ? 'none' : 'block';
+                    this.submitEarlyButton.style.display = isNotComing ? 'block' : 'none';
+                }
+            }
+
+            async handleSubmit(event) {
+                event.preventDefault();
+
+                try {
+                    const formData = new FormData(this.form);
+                    const data = Object.fromEntries(formData.entries());
+
+                    this.stepIndicator.style.display = 'none';
+
+                    const response = await this.submitForm(data);
+
+                    if (response.status === 'success') {
+                        this.showSuccessMessage();
+                    } else {
+                        throw new Error(response.message || 'Form submission failed');
+                    }
+                } catch (error) {
+                    console.error('Submission error:', error);
+                    alert('Wystąpił błąd podczas wysyłania formularza. Prosimy spróbować ponownie.');
+                }
+            }
+
+            async submitForm(data) {
+                const response = await fetch(CONFIG.API_URL, {
+                    redirect: 'follow',
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain;charset=utf-8',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                return await response.json();
+            }
+
+            showSuccessMessage() {
+                this.form.style.display = 'none';
+                const successMessage = document.getElementById('successMessage');
+                if (successMessage) {
+                    successMessage.style.display = 'block';
+                }
+            }
+
+            handleNextClick() {
+                if (this.validateStep(this.currentStep)) {
+                    this.showStep(this.currentStep + 1);
+                }
+            }
+
+            validateStep(step) {
                 const currentStepElement = document.querySelector(`[data-step="${step}"]`);
                 if (!currentStepElement) return false;
 
                 const requiredFields = currentStepElement.querySelectorAll('[required]');
                 let isValid = true;
 
-                requiredFields?.forEach(field => {
+                requiredFields.forEach(field => {
                     const errorMessage = field.closest('.question')?.querySelector('.error-message');
 
                     if (field.type === 'radio') {
                         const radioGroup = currentStepElement.querySelectorAll(`input[name="${field.name}"]`);
-                        const isChecked = Array.from(radioGroup || []).some(radio => radio.checked);
+                        const isChecked = Array.from(radioGroup).some(radio => radio.checked);
 
-                        if (!isChecked) {
-                            isValid = false;
-                            errorMessage?.style && (errorMessage.style.display = 'block');
-                        } else if (errorMessage?.style) {
-                            errorMessage.style.display = 'none';
-                        }
+                        this.toggleErrorMessage(errorMessage, !isChecked);
+                        if (!isChecked) isValid = false;
                     } else {
-                        if (!field.value) {
-                            isValid = false;
-                            errorMessage?.style && (errorMessage.style.display = 'block');
-                        } else if (errorMessage?.style) {
-                            errorMessage.style.display = 'none';
-                        }
+                        this.toggleErrorMessage(errorMessage, !field.value);
+                        if (!field.value) isValid = false;
                     }
                 });
 
                 return isValid;
             }
 
-            // Form submission
-            form?.addEventListener('submit', async function (e) {
-                e.preventDefault();
+            toggleErrorMessage(errorMessage, show) {
+                if (errorMessage) {
+                    errorMessage.style.display = show ? 'block' : 'none';
+                }
+            }
 
-                const formData = new FormData(this);
-                const data = {};
-                formData.forEach((value, key) => data[key] = value);
+            showStep(step) {
+                this.steps.forEach(s => s.classList.remove('active'));
+                const nextStep = document.querySelector(`[data-step="${step}"]`);
 
-                const stepIndicatorElement = document.getElementById('stepIndicator');
-                if (stepIndicatorElement?.style) {
-                    stepIndicatorElement.style.display = 'none';
+                if (nextStep) {
+                    nextStep.classList.add('active');
+                    this.currentStep = step;
+                    this.updateProgress(step);
+                }
+            }
+
+            updateProgress(step) {
+                if (this.stepIndicator) {
+                    this.stepIndicator.textContent = step;
                 }
 
-                try {
-                    const url = 'https://script.google.com/macros/s/AKfycby75fM0asUlTu_onLOLxMHD4r6FOzMNgT7UyZUKGQO5JyAXNaOkQjpReFWaSZrXNENm/exec';
-                    const response = await fetch(url, {
-                        redirect: 'follow',
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'text/plain;charset=utf-8',
-                        },
-                        body: JSON.stringify(data)
-                    });
-
-                    const result = await response.json();
-
-                    if (result?.status === 'success') {
-                        if (form.style) form.style.display = 'none';
-                        const successMessage = document.getElementById('successMessage');
-                        if (successMessage?.style) {
-                            successMessage.style.display = 'block';
-                        }
-                    } else {
-                        throw new Error(result?.message || 'Wystąpił błąd podczas wysyłania formularza');
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                    alert('Wystąpił błąd podczas wysyłania formularza. Prosimy spróbować ponownie.');
+                if (this.progressBar) {
+                    const progress = (step / CONFIG.TOTAL_STEPS) * 100;
+                    this.progressBar.style.width = `${progress}%`;
                 }
-            });
+            }
+        }
+
+        // Initialize the form when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new WeddingForm();
         });
     </script>
 </div>
