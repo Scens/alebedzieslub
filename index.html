@@ -214,15 +214,18 @@
         <div class="form-step" data-step="3">
             <div class="question">
                 <div class="question-title">Czy przybędziesz z osobą towarzyszącą?</div>
-                <label class="radio-option">
-                    <input type="radio" name="withCompanion" value="tak" required> Tak
-                </label>
-                <label class="radio-option">
-                    <input type="radio" name="withCompanion" value="nie"> Nie
-                </label>
-                <div class="error-message">Proszę wybrać jedną z opcji</div>
-                <div class="conditional-input" id="companionNameInput">
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="withCompanion" value="tak" required> Tak
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="withCompanion" value="nie"> Nie
+                    </label>
+                    <div class="error-message">Proszę wybrać jedną z opcji</div>
+                </div>
+                <div class="conditional-input" id="companionNameInput" style="display: none;">
                     <input type="text" name="companionName" placeholder="Imię i nazwisko osoby towarzyszącej">
+                    <div class="error-message">Proszę podać imię i nazwisko osoby towarzyszącej</div>
                 </div>
             </div>
             <div class="navigation">
@@ -235,15 +238,18 @@
         <div class="form-step" data-step="4">
             <div class="question">
                 <div class="question-title">Czy na weselu pojawisz się z dziećmi?</div>
-                <label class="radio-option">
-                    <input type="radio" name="withChildren" value="tak" required> Tak
-                </label>
-                <label class="radio-option">
-                    <input type="radio" name="withChildren" value="nie"> Nie
-                </label>
-                <div class="error-message">Proszę wybrać jedną z opcji</div>
-                <div class="conditional-input" id="childrenCountInput">
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="withChildren" value="tak" required> Tak
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="withChildren" value="nie"> Nie
+                    </label>
+                    <div class="error-message">Proszę wybrać jedną z opcji</div>
+                </div>
+                <div class="conditional-input" id="childrenCountInput" style="display: none;">
                     <input type="number" name="childrenCount" placeholder="Podaj liczbę dzieci" min="1" max="10">
+                    <div class="error-message">Proszę podać liczbę dzieci</div>
                 </div>
             </div>
             <div class="navigation">
@@ -255,17 +261,19 @@
         <!-- Step 5 -->
         <div class="form-step" data-step="5">
             <div class="question">
-                <div class="question-title">Czy potrzebujesz transportu z kościoła do Żarnowca (miejsce wesela)?
+                <div class="question-title">Czy potrzebujesz transportu z kościoła do Żarnowca (miejsce wesela)?</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="transportToVenue" value="tak" required> Tak
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="transportToVenue" value="nie"> Nie
+                    </label>
+                    <div class="error-message">Proszę wybrać jedną z opcji</div>
                 </div>
-                <label class="radio-option">
-                    <input type="radio" name="transportToVenue" value="tak" required> Tak
-                </label>
-                <label class="radio-option">
-                    <input type="radio" name="transportToVenue" value="nie"> Nie
-                </label>
-                <div class="error-message">Proszę wybrać jedną z opcji</div>
-                <div class="conditional-input" id="transportToVenueCount">
+                <div class="conditional-input" id="transportToVenueCount" style="display: none;">
                     <input type="number" name="transportToVenuePersons" placeholder="Dla ilu osób?" min="1" max="10">
+                    <div class="error-message">Proszę podać liczbę osób</div>
                 </div>
             </div>
             <div class="navigation">
@@ -277,17 +285,19 @@
         <!-- Step 6 -->
         <div class="form-step" data-step="6">
             <div class="question">
-                <div class="question-title">Czy potrzebujesz transportu z Żarnowca (miejsce wesela) do Trójmiasta?
+                <div class="question-title">Czy potrzebujesz transportu z Żarnowca (miejsce wesela) do Trójmiasta?</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="transportFromVenue" value="tak" required> Tak
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="transportFromVenue" value="nie"> Nie
+                    </label>
+                    <div class="error-message">Proszę wybrać jedną z opcji</div>
                 </div>
-                <label class="radio-option">
-                    <input type="radio" name="transportFromVenue" value="tak" required> Tak
-                </label>
-                <label class="radio-option">
-                    <input type="radio" name="transportFromVenue" value="nie"> Nie
-                </label>
-                <div class="error-message">Proszę wybrać jedną z opcji</div>
-                <div class="conditional-input" id="transportFromVenueCount">
+                <div class="conditional-input" id="transportFromVenueCount" style="display: none;">
                     <input type="number" name="transportFromVenuePersons" placeholder="Dla ilu osób?" min="1" max="10">
+                    <div class="error-message">Proszę podać liczbę osób</div>
                 </div>
             </div>
             <div class="navigation">
@@ -296,19 +306,22 @@
             </div>
         </div>
 
-        <!-- Step 7 -->
+        <!-- Step 7 (with updated error structure) -->
         <div class="form-step" data-step="7">
             <div class="question">
                 <div class="question-title">Czy potrzebujesz noclegu w Żarnowcu po przyjęciu weselnym?</div>
-                <label class="radio-option">
-                    <input type="radio" name="accommodation" value="tak" required> Tak
-                </label>
-                <label class="radio-option">
-                    <input type="radio" name="accommodation" value="nie"> Nie
-                </label>
-                <div class="error-message">Proszę wybrać jedną z opcji</div>
-                <div class="conditional-input" id="accommodationCount">
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="accommodation" value="tak" required> Tak
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="accommodation" value="nie"> Nie
+                    </label>
+                    <div class="error-message">Proszę wybrać jedną z opcji</div>
+                </div>
+                <div class="conditional-input" id="accommodationCount" style="display: none;">
                     <input type="number" name="accommodationPersons" placeholder="Dla ilu osób?" min="1" max="10">
+                    <div class="error-message">Proszę podać liczbę osób</div>
                 </div>
             </div>
             <div class="navigation">
@@ -318,202 +331,224 @@
         </div>
     </form>
 
-    <div id="successMessage" class="success-message">
+    <div id="successMessage" class="success-message" style="display: none;">
         <h2>Dziękujemy za wypełnienie formularza!</h2>
         <p>Już nie możemy się doczekać na wspólne świętowanie!</p>
     </div>
+</div>
 
-    <script>
-        // Config object for form settings
-        const CONFIG = {
-            TOTAL_STEPS: 7,
-            API_URL: 'https://script.google.com/macros/s/AKfycby75fM0asUlTu_onLOLxMHD4r6FOzMNgT7UyZUKGQO5JyAXNaOkQjpReFWaSZrXNENm/exec',
-            CONDITIONAL_FIELDS: {
-                'withCompanion': 'companionNameInput',
-                'withChildren': 'childrenCountInput',
-                'transportToVenue': 'transportToVenueCount',
-                'transportFromVenue': 'transportFromVenueCount',
-                'accommodation': 'accommodationCount'
+<script>
+    // Config object for form settings
+    const CONFIG = {
+        TOTAL_STEPS: 7,
+        API_URL: 'https://script.google.com/macros/s/AKfycby75fM0asUlTu_onLOLxMHD4r6FOzMNgT7UyZUKGQO5JyAXNaOkQjpReFWaSZrXNENm/exec',
+        CONDITIONAL_FIELDS: {
+            'withCompanion': 'companionNameInput',
+            'withChildren': 'childrenCountInput',
+            'transportToVenue': 'transportToVenueCount',
+            'transportFromVenue': 'transportFromVenueCount',
+            'accommodation': 'accommodationCount'
+        }
+    };
+
+    class WeddingForm {
+        constructor() {
+            this.currentStep = 1;
+            this.form = document.getElementById('weddingForm');
+            this.steps = document.querySelectorAll('.form-step');
+            this.stepIndicator = document.getElementById('currentStep');
+            this.progressBar = document.getElementById('progressBar');
+            this.regretMessage = document.getElementById('regretMessage');
+            this.submitEarlyButton = document.getElementById('submitEarly');
+
+            this.initializeEventListeners();
+            this.initializeConditionalFields();
+        }
+
+        initializeEventListeners() {
+            // Navigation buttons
+            document.querySelectorAll('.next').forEach(button => {
+                button.addEventListener('click', () => this.handleNextClick());
+            });
+
+            document.querySelectorAll('.prev').forEach(button => {
+                button.addEventListener('click', () => this.showStep(this.currentStep - 1));
+            });
+
+            // Attendance radio buttons
+            document.querySelectorAll('input[name="attendance"]').forEach(radio => {
+                radio.addEventListener('change', (e) => this.handleAttendanceChange(e));
+            });
+
+            // Form submission
+            this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+            if (this.submitEarlyButton) {
+                this.submitEarlyButton.addEventListener('click', (e) => this.handleSubmit(e));
             }
-        };
+        }
 
-        class WeddingForm {
-            constructor() {
-                this.currentStep = 1;
-                this.form = document.getElementById('weddingForm');
-                this.steps = document.querySelectorAll('.form-step');
-                this.stepIndicator = document.getElementById('currentStep');
-                this.progressBar = document.getElementById('progressBar');
-                this.regretMessage = document.getElementById('regretMessage');
-                this.submitEarlyButton = document.getElementById('submitEarly');
-
-                this.initializeEventListeners();
-                this.initializeConditionalFields();
-            }
-
-            initializeEventListeners() {
-                // Navigation buttons
-                document.querySelectorAll('.next').forEach(button => {
-                    button.addEventListener('click', () => this.handleNextClick());
+        initializeConditionalFields() {
+            Object.entries(CONFIG.CONDITIONAL_FIELDS).forEach(([fieldName, inputId]) => {
+                const radioButtons = document.querySelectorAll(`input[name="${fieldName}"]`);
+                radioButtons.forEach(radio => {
+                    radio.addEventListener('change', (e) => this.toggleConditionalField(inputId, e.target.value));
                 });
+            });
+        }
 
-                document.querySelectorAll('.prev').forEach(button => {
-                    button.addEventListener('click', () => this.showStep(this.currentStep - 1));
-                });
+        toggleConditionalField(inputId, value) {
+            const conditionalInput = document.getElementById(inputId);
+            if (conditionalInput) {
+                conditionalInput.style.display = value === 'tak' ? 'block' : 'none';
+                const input = conditionalInput.querySelector('input');
 
-                // Attendance radio buttons
-                document.querySelectorAll('input[name="attendance"]').forEach(radio => {
-                    radio.addEventListener('change', (e) => this.handleAttendanceChange(e));
-                });
-
-                // Form submission
-                this.form.addEventListener('submit', (e) => this.handleSubmit(e));
-                if (this.submitEarlyButton) {
-                    this.submitEarlyButton.addEventListener('click', (e) => this.handleSubmit(e));
-                }
-            }
-
-            initializeConditionalFields() {
-                Object.entries(CONFIG.CONDITIONAL_FIELDS).forEach(([fieldName, inputId]) => {
-                    const radioButtons = document.querySelectorAll(`input[name="${fieldName}"]`);
-                    radioButtons.forEach(radio => {
-                        radio.addEventListener('change', (e) => this.toggleConditionalField(inputId, e.target.value));
-                    });
-                });
-            }
-
-            toggleConditionalField(inputId, value) {
-                const conditionalInput = document.getElementById(inputId);
-                if (conditionalInput) {
-                    conditionalInput.style.display = value === 'tak' ? 'block' : 'none';
-
-                    // Clear input value when hiding
-                    if (value !== 'tak') {
-                        const input = conditionalInput.querySelector('input');
-                        if (input) input.value = '';
-                    }
-                }
-            }
-
-            handleAttendanceChange(event) {
-                const isNotComing = event.target.value === 'nie';
-
-                if (this.currentStep === 2) {
-                    this.regretMessage.style.display = isNotComing ? 'block' : 'none';
-                    const nextButton = this.steps[1].querySelector('.next');
-                    if (nextButton) nextButton.style.display = isNotComing ? 'none' : 'block';
-                    this.submitEarlyButton.style.display = isNotComing ? 'block' : 'none';
-                }
-            }
-
-            async handleSubmit(event) {
-                event.preventDefault();
-
-                try {
-                    const formData = new FormData(this.form);
-                    const data = Object.fromEntries(formData.entries());
-
-                    this.stepIndicator.style.display = 'none';
-
-                    const response = await this.submitForm(data);
-
-                    if (response.status === 'success') {
-                        this.showSuccessMessage();
+                if (input) {
+                    if (value === 'tak') {
+                        input.setAttribute('required', '');
                     } else {
-                        throw new Error(response.message || 'Form submission failed');
+                        input.removeAttribute('required');
+                        input.value = '';
+                        // Hide error message when hiding the field
+                        const errorMessage = conditionalInput.querySelector('.error-message');
+                        if (errorMessage) {
+                            errorMessage.style.display = 'none';
+                        }
                     }
-                } catch (error) {
-                    console.error('Submission error:', error);
-                    alert('Wystąpił błąd podczas wysyłania formularza. Prosimy spróbować ponownie.');
-                }
-            }
-
-            async submitForm(data) {
-                const response = await fetch(CONFIG.API_URL, {
-                    redirect: 'follow',
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'text/plain;charset=utf-8',
-                    },
-                    body: JSON.stringify(data)
-                });
-
-                return await response.json();
-            }
-
-            showSuccessMessage() {
-                this.form.style.display = 'none';
-                const successMessage = document.getElementById('successMessage');
-                if (successMessage) {
-                    successMessage.style.display = 'block';
-                }
-            }
-
-            handleNextClick() {
-                if (this.validateStep(this.currentStep)) {
-                    this.showStep(this.currentStep + 1);
-                }
-            }
-
-            validateStep(step) {
-                const currentStepElement = document.querySelector(`[data-step="${step}"]`);
-                if (!currentStepElement) return false;
-
-                const requiredFields = currentStepElement.querySelectorAll('[required]');
-                let isValid = true;
-
-                requiredFields.forEach(field => {
-                    const errorMessage = field.closest('.question')?.querySelector('.error-message');
-
-                    if (field.type === 'radio') {
-                        const radioGroup = currentStepElement.querySelectorAll(`input[name="${field.name}"]`);
-                        const isChecked = Array.from(radioGroup).some(radio => radio.checked);
-
-                        this.toggleErrorMessage(errorMessage, !isChecked);
-                        if (!isChecked) isValid = false;
-                    } else {
-                        this.toggleErrorMessage(errorMessage, !field.value);
-                        if (!field.value) isValid = false;
-                    }
-                });
-
-                return isValid;
-            }
-
-            toggleErrorMessage(errorMessage, show) {
-                if (errorMessage) {
-                    errorMessage.style.display = show ? 'block' : 'none';
-                }
-            }
-
-            showStep(step) {
-                this.steps.forEach(s => s.classList.remove('active'));
-                const nextStep = document.querySelector(`[data-step="${step}"]`);
-
-                if (nextStep) {
-                    nextStep.classList.add('active');
-                    this.currentStep = step;
-                    this.updateProgress(step);
-                }
-            }
-
-            updateProgress(step) {
-                if (this.stepIndicator) {
-                    this.stepIndicator.textContent = step;
-                }
-
-                if (this.progressBar) {
-                    const progress = (step / CONFIG.TOTAL_STEPS) * 100;
-                    this.progressBar.style.width = `${progress}%`;
                 }
             }
         }
 
-        // Initialize the form when DOM is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            new WeddingForm();
-        });
-    </script>
+        handleAttendanceChange(event) {
+            const isNotComing = event.target.value === 'nie';
+
+            if (this.currentStep === 2) {
+                this.regretMessage.style.display = isNotComing ? 'block' : 'none';
+                const nextButton = this.steps[1].querySelector('.next');
+                if (nextButton) nextButton.style.display = isNotComing ? 'none' : 'block';
+                this.submitEarlyButton.style.display = isNotComing ? 'block' : 'none';
+            }
+        }
+
+        async handleSubmit(event) {
+            event.preventDefault();
+
+            try {
+                const formData = new FormData(this.form);
+                const data = Object.fromEntries(formData.entries());
+
+                this.stepIndicator.style.display = 'none';
+
+                const response = await this.submitForm(data);
+
+                if (response.status === 'success') {
+                    this.showSuccessMessage();
+                } else {
+                    throw new Error(response.message || 'Form submission failed');
+                }
+            } catch (error) {
+                console.error('Submission error:', error);
+                alert('Wystąpił błąd podczas wysyłania formularza. Prosimy spróbować ponownie.');
+            }
+        }
+
+        async submitForm(data) {
+            const response = await fetch(CONFIG.API_URL, {
+                redirect: 'follow',
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'text/plain;charset=utf-8',
+                },
+                body: JSON.stringify(data)
+            });
+
+            return await response.json();
+        }
+
+        showSuccessMessage() {
+            this.form.style.display = 'none';
+            const successMessage = document.getElementById('successMessage');
+            if (successMessage) {
+                successMessage.style.display = 'block';
+            }
+        }
+
+        handleNextClick() {
+            if (this.validateStep(this.currentStep)) {
+                this.showStep(this.currentStep + 1);
+            }
+        }
+
+
+        validateStep(step) {
+            const currentStepElement = document.querySelector(`[data-step="${step}"]`);
+            if (!currentStepElement) return false;
+
+            let isValid = true;
+
+            // Validate radio buttons first
+            const radioGroups = currentStepElement.querySelectorAll('.radio-group');
+            radioGroups.forEach(group => {
+                const radioButtons = group.querySelectorAll('input[type="radio"]');
+                const errorMessage = group.querySelector('.error-message');
+                const isChecked = Array.from(radioButtons).some(radio => radio.checked);
+
+                this.toggleErrorMessage(errorMessage, !isChecked);
+                if (!isChecked) isValid = false;
+            });
+
+            // Then validate conditional inputs
+            const conditionalInputs = currentStepElement.querySelectorAll('.conditional-input');
+            conditionalInputs.forEach(container => {
+                if (container.style.display === 'block') {
+                    const input = container.querySelector('input');
+                    const errorMessage = container.querySelector('.error-message');
+
+                    if (input && input.hasAttribute('required')) {
+                        const isEmpty = !input.value.trim();
+                        this.toggleErrorMessage(errorMessage, isEmpty);
+                        if (isEmpty) isValid = false;
+                    }
+                }
+            });
+
+            return isValid;
+        }
+
+
+        toggleErrorMessage(errorMessage, show) {
+            if (errorMessage) {
+                errorMessage.style.display = show ? 'block' : 'none';
+            }
+        }
+
+        showStep(step) {
+            this.steps.forEach(s => s.classList.remove('active'));
+            const nextStep = document.querySelector(`[data-step="${step}"]`);
+
+            if (nextStep) {
+                nextStep.classList.add('active');
+                this.currentStep = step;
+                this.updateProgress(step);
+            }
+        }
+
+        updateProgress(step) {
+            if (this.stepIndicator) {
+                this.stepIndicator.textContent = step;
+            }
+
+            if (this.progressBar) {
+                const progress = (step / CONFIG.TOTAL_STEPS) * 100;
+                this.progressBar.style.width = `${progress}%`;
+            }
+        }
+    }
+
+    // Initialize the form when DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+        new WeddingForm();
+    });
+</script>
 </div>
 </body>
 </html>
