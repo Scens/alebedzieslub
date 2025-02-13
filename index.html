@@ -170,6 +170,7 @@
                 <label class="radio-option">
                     <input type="radio" name="attendance" value="nie"> Nie
                 </label>
+                <div class="error-message">Proszę wybrać jedną z opcji</div>
             </div>
             <div class="navigation">
                 <button type="button" class="prev">Wstecz</button>
@@ -187,6 +188,7 @@
                 <label class="radio-option">
                     <input type="radio" name="withCompanion" value="nie"> Nie
                 </label>
+                <div class="error-message">Proszę wybrać jedną z opcji</div>
                 <div class="conditional-input" id="companionNameInput">
                     <input type="text" name="companionName" placeholder="Imię i nazwisko osoby towarzyszącej">
                 </div>
@@ -207,6 +209,7 @@
                 <label class="radio-option">
                     <input type="radio" name="withChildren" value="nie"> Nie
                 </label>
+                <div class="error-message">Proszę wybrać jedną z opcji</div>
                 <div class="conditional-input" id="childrenCountInput">
                     <input type="number" name="childrenCount" placeholder="Podaj liczbę dzieci" min="1" max="10">
                 </div>
@@ -228,6 +231,7 @@
                 <label class="radio-option">
                     <input type="radio" name="transportToVenue" value="nie"> Nie
                 </label>
+                <div class="error-message">Proszę wybrać jedną z opcji</div>
                 <div class="conditional-input" id="transportToVenueCount">
                     <input type="number" name="transportToVenuePersons" placeholder="Dla ilu osób?" min="1" max="10">
                 </div>
@@ -249,6 +253,7 @@
                 <label class="radio-option">
                     <input type="radio" name="transportFromVenue" value="nie"> Nie
                 </label>
+                <div class="error-message">Proszę wybrać jedną z opcji</div>
                 <div class="conditional-input" id="transportFromVenueCount">
                     <input type="number" name="transportFromVenuePersons" placeholder="Dla ilu osób?" min="1" max="10">
                 </div>
@@ -269,6 +274,7 @@
                 <label class="radio-option">
                     <input type="radio" name="accommodation" value="nie"> Nie
                 </label>
+                <div class="error-message">Proszę wybrać jedną z opcji</div>
                 <div class="conditional-input" id="accommodationCount">
                     <input type="number" name="accommodationPersons" placeholder="Dla ilu osób?" min="1" max="10">
                 </div>
@@ -293,7 +299,7 @@
         const steps = document.querySelectorAll('.form-step');
         const stepIndicator = document.getElementById('currentStep');
 
-        // Obsługa warunkowych pól
+        // Conditional fields handling remains the same
         const conditionalFields = {
             'withCompanion': 'companionNameInput',
             'withChildren': 'childrenCountInput',
@@ -302,18 +308,20 @@
             'accommodation': 'accommodationCount'
         };
 
-        // Pokazywanie/ukrywanie warunkowych pól
+        // Show/hide conditional fields
         Object.keys(conditionalFields).forEach(fieldName => {
             const radioButtons = document.querySelectorAll(`input[name="${fieldName}"]`);
             radioButtons.forEach(radio => {
                 radio.addEventListener('change', function () {
                     const conditionalInput = document.getElementById(conditionalFields[fieldName]);
-                    conditionalInput.style.display = this.value === 'tak' ? 'block' : 'none';
+                    if (conditionalInput) {
+                        conditionalInput.style.display = this.value === 'tak' ? 'block' : 'none';
+                    }
                 });
             });
         });
 
-        // Nawigacja między krokami
+        // Navigation between steps
         document.querySelectorAll('.next').forEach(button => {
             button.addEventListener('click', () => {
                 if (validateStep(currentStep)) {
@@ -339,11 +347,29 @@
             let isValid = true;
 
             requiredFields.forEach(field => {
-                if (!field.value) {
-                    isValid = false;
-                    field.closest('.question').querySelector('.error-message').style.display = 'block';
+                const errorMessage = field.closest('.question').querySelector('.error-message');
+
+                if (field.type === 'radio') {
+                    const radioGroup = currentStepElement.querySelectorAll(`input[name="${field.name}"]`);
+                    const isChecked = Array.from(radioGroup).some(radio => radio.checked);
+
+                    if (!isChecked) {
+                        isValid = false;
+                        if (errorMessage) {
+                            errorMessage.style.display = 'block';
+                        }
+                    } else if (errorMessage) {
+                        errorMessage.style.display = 'none';
+                    }
                 } else {
-                    field.closest('.question').querySelector('.error-message').style.display = 'none';
+                    if (!field.value) {
+                        isValid = false;
+                        if (errorMessage) {
+                            errorMessage.style.display = 'block';
+                        }
+                    } else if (errorMessage) {
+                        errorMessage.style.display = 'none';
+                    }
                 }
             });
 
