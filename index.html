@@ -145,10 +145,10 @@
 </head>
 <body>
 <div class="container">
-    <div class="step-indicator">Krok <span id="currentStep">1</span>/7</div>
+    <div class="step-indicator" id="stepIndicator"><span id="currentStep">1</span>/7</div>
 
     <form id="weddingForm">
-        <!-- Krok 1 -->
+        <!-- Step 1 -->
         <div class="form-step active" data-step="1">
             <div class="question">
                 <div class="question-title">1. Imię i Nazwisko</div>
@@ -160,7 +160,7 @@
             </div>
         </div>
 
-        <!-- Krok 2 -->
+        <!-- Step 2 -->
         <div class="form-step" data-step="2">
             <div class="question">
                 <div class="question-title">2. Czy przybędziesz na nasze wesele?</div>
@@ -171,14 +171,19 @@
                     <input type="radio" name="attendance" value="nie"> Nie
                 </label>
                 <div class="error-message">Proszę wybrać jedną z opcji</div>
+                <div id="regretMessage"
+                     style="display: none; margin-top: 20px; padding: 20px; background: #f8f8f8; border-radius: 4px;">
+                    <p>Szkoda! Będzie nam Ciebie brakować. Dziękujemy za informację.</p>
+                </div>
             </div>
             <div class="navigation">
                 <button type="button" class="prev">Wstecz</button>
                 <button type="button" class="next">Dalej</button>
+                <button type="submit" id="submitEarly" style="display: none;">Wyślij</button>
             </div>
         </div>
 
-        <!-- Krok 3 -->
+        <!-- Step 3 -->
         <div class="form-step" data-step="3">
             <div class="question">
                 <div class="question-title">3. Czy przybędziesz z osobą towarzyszącą?</div>
@@ -199,7 +204,7 @@
             </div>
         </div>
 
-        <!-- Krok 4 -->
+        <!-- Step 4 -->
         <div class="form-step" data-step="4">
             <div class="question">
                 <div class="question-title">4. Czy na weselu pojawisz się z dziećmi?</div>
@@ -220,7 +225,7 @@
             </div>
         </div>
 
-        <!-- Krok 5 -->
+        <!-- Step 5 -->
         <div class="form-step" data-step="5">
             <div class="question">
                 <div class="question-title">5. Czy potrzebujesz transportu z kościoła do Żarnowca (miejsce wesela)?
@@ -242,7 +247,7 @@
             </div>
         </div>
 
-        <!-- Krok 6 -->
+        <!-- Step 6 -->
         <div class="form-step" data-step="6">
             <div class="question">
                 <div class="question-title">6. Czy potrzebujesz transportu z Żarnowca (miejsce wesela) do Trójmiasta?
@@ -264,7 +269,7 @@
             </div>
         </div>
 
-        <!-- Krok 7 -->
+        <!-- Step 7 -->
         <div class="form-step" data-step="7">
             <div class="question">
                 <div class="question-title">7. Czy potrzebujesz noclegu w Żarnowcu po przyjęciu weselnym?</div>
@@ -286,128 +291,154 @@
         </div>
     </form>
 
+    <!-- Updated JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let currentStep = 1;
+            const form = document.getElementById('weddingForm');
+            const steps = document.querySelectorAll('.form-step');
+            const stepIndicator = document.getElementById('currentStep');
+
+            // Conditional fields handling remains the same
+            const conditionalFields = {
+                'withCompanion': 'companionNameInput',
+                'withChildren': 'childrenCountInput',
+                'transportToVenue': 'transportToVenueCount',
+                'transportFromVenue': 'transportFromVenueCount',
+                'accommodation': 'accommodationCount'
+            };
+
+            // Show/hide conditional fields
+            Object.keys(conditionalFields).forEach(fieldName => {
+                const radioButtons = document.querySelectorAll(`input[name="${fieldName}"]`);
+                radioButtons.forEach(radio => {
+                    radio.addEventListener('change', function () {
+                        const conditionalInput = document.getElementById(conditionalFields[fieldName]);
+                        if (conditionalInput) {
+                            conditionalInput.style.display = this.value === 'tak' ? 'block' : 'none';
+                        }
+                    });
+                });
+            });
+
+            // Handle attendance radio change
+            const attendanceRadios = document.querySelectorAll('input[name="attendance"]');
+            const regretMessage = document.getElementById('regretMessage');
+            const submitEarlyButton = document.getElementById('submitEarly');
+            const nextButtons = document.querySelectorAll('.next');
+
+            attendanceRadios.forEach(radio => {
+                radio.addEventListener('change', function () {
+                    if (this.value === 'nie' && currentStep === 2) {
+                        regretMessage.style.display = 'block';
+                        nextButtons[1].style.display = 'none'; // Hide next button on step 2
+                        submitEarlyButton.style.display = 'block';
+                    } else if (this.value === 'tak' && currentStep === 2) {
+                        regretMessage.style.display = 'none';
+                        nextButtons[1].style.display = 'block';
+                        submitEarlyButton.style.display = 'none';
+                    }
+                });
+            });
+
+            // Navigation between steps
+            document.querySelectorAll('.next').forEach(button => {
+                button.addEventListener('click', () => {
+                    if (validateStep(currentStep)) {
+                        showStep(currentStep + 1);
+                    }
+                });
+            });
+
+            document.querySelectorAll('.prev').forEach(button => {
+                button.addEventListener('click', () => showStep(currentStep - 1));
+            });
+
+            function showStep(step) {
+                steps.forEach(s => s.classList.remove('active'));
+                document.querySelector(`[data-step="${step}"]`).classList.add('active');
+                currentStep = step;
+                stepIndicator.textContent = step;
+            }
+
+            function validateStep(step) {
+                const currentStepElement = document.querySelector(`[data-step="${step}"]`);
+                const requiredFields = currentStepElement.querySelectorAll('[required]');
+                let isValid = true;
+
+                requiredFields.forEach(field => {
+                    const errorMessage = field.closest('.question').querySelector('.error-message');
+
+                    if (field.type === 'radio') {
+                        const radioGroup = currentStepElement.querySelectorAll(`input[name="${field.name}"]`);
+                        const isChecked = Array.from(radioGroup).some(radio => radio.checked);
+
+                        if (!isChecked) {
+                            isValid = false;
+                            if (errorMessage) {
+                                errorMessage.style.display = 'block';
+                            }
+                        } else if (errorMessage) {
+                            errorMessage.style.display = 'none';
+                        }
+                    } else {
+                        if (!field.value) {
+                            isValid = false;
+                            if (errorMessage) {
+                                errorMessage.style.display = 'block';
+                            }
+                        } else if (errorMessage) {
+                            errorMessage.style.display = 'none';
+                        }
+                    }
+                });
+
+                return isValid;
+            }
+
+            // Form submission
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                const formData = new FormData(this);
+                const data = {};
+                formData.forEach((value, key) => data[key] = value);
+
+                // Hide step indicator when form is submitted
+                document.getElementById('stepIndicator').style.display = 'none';
+
+                try {
+                    let url = 'https://script.google.com/macros/s/AKfycby75fM0asUlTu_onLOLxMHD4r6FOzMNgT7UyZUKGQO5JyAXNaOkQjpReFWaSZrXNENm/exec';
+                    const response = await fetch(url, {
+                        redirect: 'follow',
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'text/plain;charset=utf-8',
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    const result = await response.json();
+
+                    if (result.status === 'success') {
+                        form.style.display = 'none';
+                        document.getElementById('successMessage').style.display = 'block';
+                    } else {
+                        throw new Error(result.message || 'Wystąpił błąd podczas wysyłania formularza');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Wystąpił błąd podczas wysyłania formularza. Prosimy spróbować ponownie.');
+                }
+            });
+        });
+    </script>
+    </form>
+
     <div id="successMessage" class="success-message">
         <h2>Dziękujemy za wypełnienie formularza!</h2>
         <p>Już nie możemy się doczekać na wspólne świętowanie!</p>
     </div>
 </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        let currentStep = 1;
-        const form = document.getElementById('weddingForm');
-        const steps = document.querySelectorAll('.form-step');
-        const stepIndicator = document.getElementById('currentStep');
-
-        // Conditional fields handling remains the same
-        const conditionalFields = {
-            'withCompanion': 'companionNameInput',
-            'withChildren': 'childrenCountInput',
-            'transportToVenue': 'transportToVenueCount',
-            'transportFromVenue': 'transportFromVenueCount',
-            'accommodation': 'accommodationCount'
-        };
-
-        // Show/hide conditional fields
-        Object.keys(conditionalFields).forEach(fieldName => {
-            const radioButtons = document.querySelectorAll(`input[name="${fieldName}"]`);
-            radioButtons.forEach(radio => {
-                radio.addEventListener('change', function () {
-                    const conditionalInput = document.getElementById(conditionalFields[fieldName]);
-                    if (conditionalInput) {
-                        conditionalInput.style.display = this.value === 'tak' ? 'block' : 'none';
-                    }
-                });
-            });
-        });
-
-        // Navigation between steps
-        document.querySelectorAll('.next').forEach(button => {
-            button.addEventListener('click', () => {
-                if (validateStep(currentStep)) {
-                    showStep(currentStep + 1);
-                }
-            });
-        });
-
-        document.querySelectorAll('.prev').forEach(button => {
-            button.addEventListener('click', () => showStep(currentStep - 1));
-        });
-
-        function showStep(step) {
-            steps.forEach(s => s.classList.remove('active'));
-            document.querySelector(`[data-step="${step}"]`).classList.add('active');
-            currentStep = step;
-            stepIndicator.textContent = step;
-        }
-
-        function validateStep(step) {
-            const currentStepElement = document.querySelector(`[data-step="${step}"]`);
-            const requiredFields = currentStepElement.querySelectorAll('[required]');
-            let isValid = true;
-
-            requiredFields.forEach(field => {
-                const errorMessage = field.closest('.question').querySelector('.error-message');
-
-                if (field.type === 'radio') {
-                    const radioGroup = currentStepElement.querySelectorAll(`input[name="${field.name}"]`);
-                    const isChecked = Array.from(radioGroup).some(radio => radio.checked);
-
-                    if (!isChecked) {
-                        isValid = false;
-                        if (errorMessage) {
-                            errorMessage.style.display = 'block';
-                        }
-                    } else if (errorMessage) {
-                        errorMessage.style.display = 'none';
-                    }
-                } else {
-                    if (!field.value) {
-                        isValid = false;
-                        if (errorMessage) {
-                            errorMessage.style.display = 'block';
-                        }
-                    } else if (errorMessage) {
-                        errorMessage.style.display = 'none';
-                    }
-                }
-            });
-
-            return isValid;
-        }
-
-        // Obsługa wysyłania formularza
-        form.addEventListener('submit', async function (e) {
-            e.preventDefault();
-
-            const formData = new FormData(this);
-            const data = {};
-            formData.forEach((value, key) => data[key] = value);
-
-            try {
-                const response = await fetch('https://script.google.com/macros/s/AKfycby75fM0asUlTu_onLOLxMHD4r6FOzMNgT7UyZUKGQO5JyAXNaOkQjpReFWaSZrXNENm/exec', {
-                    redirect: 'follow',
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'text/plain;charset=utf-8',
-                    },
-                    body: JSON.stringify(data)
-                });
-
-                const result = await response.json();
-
-                if (result.status === 'success') {
-                    form.style.display = 'none';
-                    document.getElementById('successMessage').style.display = 'block';
-                } else {
-                    throw new Error(result.message || 'Wystąpił błąd podczas wysyłania formularza');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Wystąpił błąd podczas wysyłania formularza. Prosimy spróbować ponownie.');
-            }
-        });
-    });
-</script>
 </body>
 </html>
