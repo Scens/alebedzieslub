@@ -5,19 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ankieta Ślubna</title>
     <style>
+        :root {
+            /* Color variables */
+            --primary-color: #accbdd;
+            --secondary-color: #8fb3cc;
+            --dark-accent: #3a6a85;
+            --light-accent: #d9e6f0;
+            --white: #ffffff;
+            --error-color: #f05555;
+
+            /* Border radius variable - change this value to experiment */
+            --border-radius: 8px;
+            --border-radius-small: 4px;
+            --border-radius-round: 50%;
+        }
+
         .progress-bar {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 6px;
-            background: #8fb3cc;
+            background: var(--secondary-color);
             z-index: 1000;
         }
 
         .progress-bar-fill {
             height: 100%;
-            background: #ffffff;
+            background: var(--white);
             transition: width 0.3s ease;
             width: 12.5%;
         }
@@ -27,7 +42,7 @@
             line-height: 1.6;
             margin: 0;
             padding: 0;
-            background: #accbdd;
+            background: var(--primary-color);
             color: #333;
             /* Added display flex for centering */
             display: flex;
@@ -48,18 +63,18 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            color: #fff;
+            color: var(--white);
             font-size: 14px;
             padding: 5px 10px;
             background: rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
+            border-radius: var(--border-radius-small);
         }
 
         .form-step {
             display: none;
-            background: #ffffff;
+            background: var(--white);
             padding: 40px;
-            border-radius: 8px;
+            border-radius: var(--border-radius);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             margin-top: 0;
         }
@@ -75,7 +90,7 @@
         .question-title {
             font-size: 24px;
             margin-bottom: 20px;
-            color: #3a6a85;
+            color: var(--dark-accent);
         }
 
         input[type="text"],
@@ -83,8 +98,8 @@
         input[type="number"] {
             width: 100%;
             padding: 12px;
-            border: 2px solid #d9e6f0;
-            border-radius: 4px;
+            border: 2px solid var(--light-accent);
+            border-radius: var(--border-radius-small);
             font-size: 16px;
             margin-top: 8px;
             box-sizing: border-box;
@@ -93,7 +108,7 @@
         input[type="text"]:focus,
         input[type="email"]:focus,
         input[type="number"]:focus {
-            border-color: #8fb3cc;
+            border-color: var(--secondary-color);
             outline: none;
         }
 
@@ -101,15 +116,15 @@
             display: block;
             padding: 15px;
             margin-bottom: 10px;
-            background: #d9e6f0;
-            border-radius: 4px;
+            background: var(--light-accent);
+            border-radius: var(--border-radius-small);
             cursor: pointer;
             transition: background-color 0.3s;
         }
 
         .radio-option:hover {
-            background: #8fb3cc;
-            color: #fff;
+            background: var(--secondary-color);
+            color: var(--white);
         }
 
         .radio-option input[type="radio"] {
@@ -129,29 +144,29 @@
         }
 
         button {
-            background: #8fb3cc;
-            color: #fff;
+            background: var(--secondary-color);
+            color: var(--white);
             border: none;
             padding: 12px 24px;
-            border-radius: 4px;
+            border-radius: var(--border-radius-small);
             cursor: pointer;
             font-size: 16px;
             transition: background-color 0.3s;
         }
 
         button:hover {
-            background: #3a6a85;
+            background: var(--dark-accent);
         }
 
         button:disabled {
-            background: #d9e6f0;
+            background: var(--light-accent);
             cursor: not-allowed;
-            color: #8fb3cc;
+            color: var(--secondary-color);
         }
 
         button.prev {
-            background: #d9e6f0;
-            color: #3a6a85;
+            background: var(--light-accent);
+            color: var(--dark-accent);
         }
 
         button.prev:hover {
@@ -159,7 +174,7 @@
         }
 
         .error-message {
-            color: #f05555;
+            color: var(--error-color);
             font-size: 14px;
             margin-top: 5px;
             display: none;
@@ -169,8 +184,8 @@
             display: none;
             text-align: center;
             padding: 40px;
-            background: #fff;
-            border-radius: 8px;
+            background: var(--white);
+            border-radius: var(--border-radius);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
@@ -190,9 +205,9 @@
         .loading-spinner {
             width: 50px;
             height: 50px;
-            border: 5px solid #d9e6f0;
-            border-radius: 50%;
-            border-top-color: #3a6a85;
+            border: 5px solid var(--light-accent);
+            border-radius: var(--border-radius-round);
+            border-top-color: var(--dark-accent);
             animation: spin 1s linear infinite;
         }
 
@@ -202,7 +217,7 @@
             left: 50%;
             transform: translateX(-50%);
             font-size: 16px;
-            color: #3a6a85;
+            color: var(--dark-accent);
         }
 
         @keyframes spin {
@@ -233,9 +248,9 @@
         #regretMessage {
             margin-top: 20px;
             padding: 20px;
-            background: #d9e6f0;
-            border-radius: 4px;
-            color: #3a6a85;
+            background: var(--light-accent);
+            border-radius: var(--border-radius-small);
+            color: var(--dark-accent);
         }
     </style>
 </head>
