@@ -35,7 +35,7 @@
             height: 100%;
             background: var(--white);
             transition: width 0.3s ease;
-            width: 12.5%;
+            width: 0%;
         }
 
         body {
@@ -174,6 +174,15 @@
             background: #c5d6e6;
         }
 
+        button.skip {
+            background: var(--light-accent);
+            color: var(--dark-accent);
+        }
+
+        button.skip:hover {
+            background: #c5d6e6;
+        }
+
         .error-message {
             color: var(--error-color);
             font-size: 14px;
@@ -246,12 +255,83 @@
             opacity: 0.7;
         }
 
-        #regretMessage {
-            margin-top: 20px;
-            padding: 20px;
-            background: var(--light-accent);
-            border-radius: var(--border-radius-small);
+        /* Welcome Page Styles */
+        .welcome-page {
+            text-align: center;
+            background: var(--white);
+            padding: 40px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .welcome-title {
+            font-size: 32px;
             color: var(--dark-accent);
+            margin-bottom: 20px;
+        }
+
+        .welcome-subtitle {
+            font-size: 20px;
+            color: var(--secondary-color);
+            margin-bottom: 30px;
+        }
+
+        .welcome-message {
+            font-size: 18px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .welcome-button {
+            display: inline-block;
+            background: var(--secondary-color);
+            color: var(--white);
+            border: none;
+            padding: 15px 30px;
+            border-radius: var(--border-radius-big);
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+
+        .welcome-button:hover {
+            background: var(--dark-accent);
+        }
+
+        .hearts {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .heart {
+            font-size: 30px;
+            color: var(--secondary-color);
+            margin: 0 10px;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        .heart:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .heart:nth-child(3) {
+            animation-delay: 1s;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+            }
         }
     </style>
 </head>
@@ -265,10 +345,26 @@
     <div class="loading-text">Wysyłanie formularza...</div>
 </div>
 
-<div class="step-indicator" id="stepIndicator"><span id="currentStep">1</span>/7</div>
+<div class="step-indicator" id="stepIndicator" style="display: none;"><span id="currentStep">1</span>/9</div>
 
 <div class="container">
-    <form id="weddingForm">
+    <!-- Welcome Page -->
+    <div id="welcomePage" class="welcome-page">
+        <div class="welcome-title">Zaproszenie na nasz ślub</div>
+        <div class="hearts">
+            <div class="heart">♥</div>
+            <div class="heart">♥</div>
+            <div class="heart">♥</div>
+        </div>
+        <div class="welcome-subtitle">Cieszymy się, że możesz być częścią naszego wyjątkowego dnia!</div>
+        <div class="welcome-message">
+            Prosimy o wypełnienie krótkiej ankiety, która pomoże nam w zaplanowaniu tego szczególnego wydarzenia.
+            Twoja obecność jest dla nas bardzo ważna!
+        </div>
+        <button class="welcome-button" id="startSurvey">Rozpocznij ankietę</button>
+    </div>
+
+    <form id="weddingForm" style="display: none;">
         <!-- Step 1 -->
         <div class="form-step active" data-step="1">
             <div class="question">
@@ -285,15 +381,14 @@
         <div class="form-step" data-step="2">
             <div class="question">
                 <div class="question-title">Czy przybędziesz na nasze wesele?</div>
-                <label class="radio-option">
-                    <input type="radio" name="attendance" value="tak" required> Tak
-                </label>
-                <label class="radio-option">
-                    <input type="radio" name="attendance" value="nie"> Nie
-                </label>
-                <div class="error-message">Proszę wybrać jedną z opcji</div>
-                <div id="regretMessage" style="display: none;">
-                    <p>Szkoda! Będzie nam Ciebie brakować. Dziękujemy za informację.</p>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="attendance" value="tak" required> Tak
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="attendance" value="nie"> Nie
+                    </label>
+                    <div class="error-message">Proszę wybrać jedną z opcji</div>
                 </div>
             </div>
             <div class="navigation">
@@ -399,7 +494,7 @@
             </div>
         </div>
 
-        <!-- Step 7 (with updated error structure) -->
+        <!-- Step 7 -->
         <div class="form-step" data-step="7">
             <div class="question">
                 <div class="question-title">Czy potrzebujesz noclegu w Żarnowcu po przyjęciu weselnym?</div>
@@ -419,6 +514,32 @@
             </div>
             <div class="navigation">
                 <button type="button" class="prev">Wstecz</button>
+                <button type="button" class="next">Dalej</button>
+            </div>
+        </div>
+
+        <!-- Step 8 (New Optional Song Step) -->
+        <div class="form-step" data-step="8">
+            <div class="question">
+                <div class="question-title">Jaki utwór chciałbyś/chciałabyś usłyszeć na naszym weselu?</div>
+                <p style="margin-bottom: 15px; color: var(--dark-accent);">To pytanie jest opcjonalne - możesz je pominąć.</p>
+                <input type="text" name="songSuggestion" placeholder="Tytuł utworu i wykonawca">
+            </div>
+            <div class="navigation">
+                <button type="button" class="prev">Wstecz</button>
+                <button type="button" class="skip">Pomiń</button>
+                <button type="button" class="next">Dalej</button>
+            </div>
+        </div>
+
+        <!-- Step 9 (Final Review Step) -->
+        <div class="form-step" data-step="9">
+            <div class="question">
+                <div class="question-title">Dziękujemy za wypełnienie ankiety!</div>
+                <p>Wszystkie potrzebne informacje zostały zebrane. Kliknij "Wyślij", aby zakończyć.</p>
+            </div>
+            <div class="navigation">
+                <button type="button" class="prev">Wstecz</button>
                 <button type="submit">Wyślij</button>
             </div>
         </div>
@@ -428,12 +549,17 @@
         <h2>Dziękujemy za wypełnienie formularza!</h2>
         <p>Już nie możemy się doczekać na wspólne świętowanie!</p>
     </div>
+
+    <div id="regretSuccessMessage" class="success-message" style="display: none;">
+        <h2>Dziękujemy za informację!</h2>
+        <p>Szkoda! Będzie nam Ciebie brakować.</p>
+    </div>
 </div>
 
 <script>
     // Config object for form settings
     const CONFIG = {
-        TOTAL_STEPS: 7,
+        TOTAL_STEPS: 9,
         API_URL: 'https://script.google.com/macros/s/AKfycby75fM0asUlTu_onLOLxMHD4r6FOzMNgT7UyZUKGQO5JyAXNaOkQjpReFWaSZrXNENm/exec',
         CONDITIONAL_FIELDS: {
             'withCompanion': 'companionNameInput',
@@ -452,15 +578,19 @@
             this.currentStep = document.getElementById('currentStep');
             this.stepIndicator = document.getElementById('stepIndicator');
             this.progressBar = document.getElementById('progressBar');
-            this.regretMessage = document.getElementById('regretMessage');
             this.submitEarlyButton = document.getElementById('submitEarly');
             this.loadingOverlay = document.querySelector('.loading-overlay');
+            this.welcomePage = document.getElementById('welcomePage');
+            this.notAttending = false;
 
             this.initializeEventListeners();
             this.initializeConditionalFields();
         }
 
         initializeEventListeners() {
+            // Start survey button
+            document.getElementById('startSurvey').addEventListener('click', () => this.startSurvey());
+
             // Navigation buttons
             document.querySelectorAll('.next').forEach(button => {
                 button.addEventListener('click', () => this.handleNextClick());
@@ -468,6 +598,11 @@
 
             document.querySelectorAll('.prev').forEach(button => {
                 button.addEventListener('click', () => this.showStep(this.currentStepCounter - 1));
+            });
+
+            // Skip button for optional step
+            document.querySelectorAll('.skip').forEach(button => {
+                button.addEventListener('click', () => this.showStep(this.currentStepCounter + 1));
             });
 
             // Attendance radio buttons
@@ -480,6 +615,13 @@
             if (this.submitEarlyButton) {
                 this.submitEarlyButton.addEventListener('click', (e) => this.handleSubmit(e));
             }
+        }
+
+        startSurvey() {
+            this.welcomePage.style.display = 'none';
+            this.form.style.display = 'block';
+            this.stepIndicator.style.display = 'block';
+            this.updateProgress(1);
         }
 
         initializeConditionalFields() {
@@ -541,9 +683,9 @@
 
         handleAttendanceChange(event) {
             const isNotComing = event.target.value === 'nie';
+            this.notAttending = isNotComing;
 
             if (this.currentStepCounter === 2) {
-                this.regretMessage.style.display = isNotComing ? 'block' : 'none';
                 const nextButton = this.steps[1].querySelector('.next');
                 if (nextButton) nextButton.style.display = isNotComing ? 'none' : 'block';
                 this.submitEarlyButton.style.display = isNotComing ? 'block' : 'none';
@@ -568,7 +710,7 @@
 
                 if (response.status === 'success') {
                     this.clearForm();
-                    this.showSuccessMessage();
+                    this.showSuccessOrRegretMessage();
                 } else {
                     throw new Error(response.message || 'Form submission failed');
                 }
@@ -593,12 +735,19 @@
             return await response.json();
         }
 
-        showSuccessMessage() {
+        showSuccessOrRegretMessage() {
             this.form.style.display = 'none';
-            const successMessage = document.getElementById('successMessage');
-            if (successMessage) {
+
+            // Show appropriate message based on attendance
+            if (this.notAttending) {
+                const regretMessage = document.getElementById('regretSuccessMessage');
+                regretMessage.style.display = 'block';
+                setTimeout(() => {
+                    regretMessage.classList.add('visible');
+                }, 50);
+            } else {
+                const successMessage = document.getElementById('successMessage');
                 successMessage.style.display = 'block';
-                // Add a small delay before adding the visible class for the fade-in effect
                 setTimeout(() => {
                     successMessage.classList.add('visible');
                 }, 50);
@@ -611,14 +760,25 @@
             }
         }
 
-
         validateStep(step) {
             const currentStepElement = document.querySelector(`[data-step="${step}"]`);
             if (!currentStepElement) return false;
 
+            // Skip validation for optional song step
+            if (step === 8) return true;
+
             let isValid = true;
 
-            // Validate radio buttons first
+            // Validate text inputs
+            const requiredInputs = currentStepElement.querySelectorAll('input[type="text"][required], input[type="email"][required], input[type="number"][required]');
+            requiredInputs.forEach(input => {
+                const errorMessage = input.nextElementSibling;
+                const isEmpty = !input.value.trim();
+                this.toggleErrorMessage(errorMessage, isEmpty);
+                if (isEmpty) isValid = false;
+            });
+
+            // Validate radio buttons
             const radioGroups = currentStepElement.querySelectorAll('.radio-group');
             radioGroups.forEach(group => {
                 const radioButtons = group.querySelectorAll('input[type="radio"]');
@@ -629,7 +789,7 @@
                 if (!isChecked) isValid = false;
             });
 
-            // Then validate conditional inputs
+            // Validate conditional inputs
             const conditionalInputs = currentStepElement.querySelectorAll('.conditional-input');
             conditionalInputs.forEach(container => {
                 if (container.style.display === 'block') {
@@ -646,7 +806,6 @@
 
             return isValid;
         }
-
 
         toggleErrorMessage(errorMessage, show) {
             if (errorMessage) {
