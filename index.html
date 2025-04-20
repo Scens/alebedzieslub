@@ -345,7 +345,7 @@
     <div class="loading-text">Wysyłanie formularza...</div>
 </div>
 
-<div class="step-indicator" id="stepIndicator" style="display: none;"><span id="currentStep">1</span>/9</div>
+<div class="step-indicator" id="stepIndicator" style="display: none;"><span id="currentStep">1</span>/8</div>
 
 <div class="container">
     <!-- Welcome Page -->
@@ -422,8 +422,22 @@
             </div>
         </div>
 
-        <!-- Step 4 -->
+        <!-- Step 4 (Song Request - Optional) -->
         <div class="form-step" data-step="4">
+            <div class="question">
+                <div class="question-title">Jaki utwór chciałbyś/chciałabyś usłyszeć na naszym weselu?</div>
+                <p style="margin-bottom: 15px; color: var(--dark-accent);">To pytanie jest opcjonalne - możesz je pominąć.</p>
+                <input type="text" name="songSuggestion" placeholder="Tytuł utworu i wykonawca">
+            </div>
+            <div class="navigation">
+                <button type="button" class="prev">Wstecz</button>
+                <button type="button" class="skip">Pomiń</button>
+                <button type="button" class="next">Dalej</button>
+            </div>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="form-step" data-step="5">
             <div class="question">
                 <div class="question-title">Czy na weselu pojawisz się z dziećmi?</div>
                 <div class="radio-group">
@@ -446,8 +460,8 @@
             </div>
         </div>
 
-        <!-- Step 5 -->
-        <div class="form-step" data-step="5">
+        <!-- Step 6 -->
+        <div class="form-step" data-step="6">
             <div class="question">
                 <div class="question-title">Czy potrzebujesz transportu z kościoła do Żarnowca (miejsce wesela)?</div>
                 <div class="radio-group">
@@ -470,8 +484,8 @@
             </div>
         </div>
 
-        <!-- Step 6 -->
-        <div class="form-step" data-step="6">
+        <!-- Step 7 -->
+        <div class="form-step" data-step="7">
             <div class="question">
                 <div class="question-title">Czy potrzebujesz transportu z Żarnowca (miejsce wesela) do Trójmiasta?</div>
                 <div class="radio-group">
@@ -494,8 +508,8 @@
             </div>
         </div>
 
-        <!-- Step 7 -->
-        <div class="form-step" data-step="7">
+        <!-- Step 8 -->
+        <div class="form-step" data-step="8">
             <div class="question">
                 <div class="question-title">Czy potrzebujesz noclegu w Żarnowcu po przyjęciu weselnym?</div>
                 <div class="radio-group">
@@ -511,32 +525,6 @@
                     <input type="number" name="accommodationPersons" placeholder="Dla ilu osób?" min="1" max="10">
                     <div class="error-message">Proszę podać liczbę osób</div>
                 </div>
-            </div>
-            <div class="navigation">
-                <button type="button" class="prev">Wstecz</button>
-                <button type="button" class="next">Dalej</button>
-            </div>
-        </div>
-
-        <!-- Step 8 (New Optional Song Step) -->
-        <div class="form-step" data-step="8">
-            <div class="question">
-                <div class="question-title">Jaki utwór chciałbyś/chciałabyś usłyszeć na naszym weselu?</div>
-                <p style="margin-bottom: 15px; color: var(--dark-accent);">To pytanie jest opcjonalne - możesz je pominąć.</p>
-                <input type="text" name="songSuggestion" placeholder="Tytuł utworu i wykonawca">
-            </div>
-            <div class="navigation">
-                <button type="button" class="prev">Wstecz</button>
-                <button type="button" class="skip">Pomiń</button>
-                <button type="button" class="next">Dalej</button>
-            </div>
-        </div>
-
-        <!-- Step 9 (Final Review Step) -->
-        <div class="form-step" data-step="9">
-            <div class="question">
-                <div class="question-title">Dziękujemy za wypełnienie ankiety!</div>
-                <p>Wszystkie potrzebne informacje zostały zebrane. Kliknij "Wyślij", aby zakończyć.</p>
             </div>
             <div class="navigation">
                 <button type="button" class="prev">Wstecz</button>
@@ -559,8 +547,8 @@
 <script>
     // Config object for form settings
     const CONFIG = {
-        TOTAL_STEPS: 9,
-        API_URL: 'https://script.google.com/macros/s/AKfycby75fM0asUlTu_onLOLxMHD4r6FOzMNgT7UyZUKGQO5JyAXNaOkQjpReFWaSZrXNENm/exec',
+        TOTAL_STEPS: 8,
+        API_URL: 'https://script.google.com/macros/s/AKfycbxLXYFYTGXmd-ols1sErXxAGN2SKG2Bi-aRT2E09A1ShVPgHQ-nLXpOc6O7TVzAN5Rj/exec',
         CONDITIONAL_FIELDS: {
             'withCompanion': 'companionNameInput',
             'withChildren': 'childrenCountInput',
@@ -765,7 +753,7 @@
             if (!currentStepElement) return false;
 
             // Skip validation for optional song step
-            if (step === 8) return true;
+            if (step === 4) return true;
 
             let isValid = true;
 
