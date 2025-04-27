@@ -12,6 +12,7 @@
             --dark-accent: #3a6a85;
             --light-accent: #d9e6f0;
             --white: #ffffff;
+            --black: #000000;
             --error-color: #f05555;
 
 
@@ -89,17 +90,26 @@
 
         .wedding-logo {
             display: block;
-            width: 280px; /* Bigger logo */
-            margin: 0 auto 30px;
+            width: 520px;
+            margin: 0 auto;
             max-width: 100%;
             position: relative;
-            left: 5px; /* Slight offset to correct SVG centering */
+            left: 12px; /* Slight offset to correct SVG centering */
         }
 
         /* Responsive adjustment for mobile devices */
         @media (max-width: 768px) {
             .wedding-logo {
-                width: 200px; /* Smaller on mobile */
+                width: 350px; /* Smaller on mobile */
+                left: 9px !important;
+            }
+
+            .welcome-title {
+                font-size: 13px !important;
+            }
+
+            .couple-names {
+                font-size: 13px !important;
             }
         }
 
@@ -257,15 +267,6 @@
             color: var(--dark-accent);
         }
 
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
         /* Fade animation for success message */
         .success-message {
             opacity: 0;
@@ -286,7 +287,7 @@
         .welcome-page {
             text-align: center;
             background: var(--white);
-            padding: 40px;
+            padding: 0;
             border-radius: var(--border-radius);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             max-width: 800px;
@@ -294,16 +295,21 @@
             position: relative;
         }
 
+        .welcome-content {
+            padding: 0 40px 40px 40px;
+        }
+
         .welcome-title {
-            font-size: 28px; /* Smaller font */
-            color: var(--dark-accent);
+            font-size: 18px; /* Smaller font */
+            color: var(--black);
             margin-bottom: 10px;
-            font-weight: 300;
+            font-weight: normal;
+            letter-spacing: 0.05em;
         }
 
         .couple-names {
-            font-size: 24px;
-            color: var(--secondary-color);
+            font-size: 18px;
+            color: var(--dark-accent);
             margin-bottom: 30px;
             font-weight: 300;
             cursor: pointer;
@@ -379,20 +385,22 @@
 
     <!-- Welcome Page -->
     <div id="welcomePage" class="welcome-page">
-        <img src="slub_logo.svg" alt="Ślubne logo" class="wedding-logo">
-        <div class="welcome-title">Ankieta Ślubna</div>
-        <div class="couple-names">Czaja i Rafał</div>
-        <div class="welcome-message">
-            Prosimy o wypełnienie krótkiej ankiety, która pomoże nam w zaplanowaniu naszego ślubu.
-            Twoja obecność jest dla nas bardzo ważna!
+        <img src="slub_logo.png" alt="Ślubne logo" class="wedding-logo">
+        <div class="welcome-content">
+            <div class="welcome-title">ANKIETA ŚLUBNA</div>
+            <div class="couple-names">Czaja i Rafał</div>
+            <div class="welcome-message">
+                Prosimy o wypełnienie krótkiej ankiety, która pomoże nam w zaplanowaniu naszego ślubu.
+                Twoja obecność jest dla nas bardzo ważna!
+            </div>
+            <button class="welcome-button" id="startSurvey">Rozpocznij ankietę</button>
         </div>
-        <button class="welcome-button" id="startSurvey">Rozpocznij ankietę</button>
     </div>
 
     <form id="weddingForm" style="display: none;">
         <!-- Step 1 -->
         <div class="form-step active" data-step="1">
-            <img src="slub_logo.svg" alt="Ślubne logo" class="wedding-logo">
+            <img src="slub_logo.png" alt="Ślubne logo" class="wedding-logo">
             <div class="question">
                 <div class="question-title">Imię i nazwisko</div>
                 <input type="text" name="name" required>
@@ -405,7 +413,7 @@
 
         <!-- Step 2 -->
         <div class="form-step" data-step="2">
-            <img src="slub_logo.svg" alt="Ślubne logo" class="wedding-logo">
+            <img src="slub_logo.png" alt="Ślubne logo" class="wedding-logo">
             <div class="question">
                 <div class="question-title">Czy przybędziesz na nasze wesele?</div>
                 <div class="radio-group">
@@ -427,7 +435,7 @@
 
         <!-- Step 3 -->
         <div class="form-step" data-step="3">
-            <img src="slub_logo.svg" alt="Ślubne logo" class="wedding-logo">
+            <img src="slub_logo.png" alt="Ślubne logo" class="wedding-logo">
             <div class="question">
                 <div class="question-title">Czy przybędziesz z osobą towarzyszącą?</div>
                 <div class="radio-group">
@@ -452,7 +460,7 @@
 
         <!-- Step 4 (Song Request - Optional) -->
         <div class="form-step" data-step="4">
-            <img src="slub_logo.svg" alt="Ślubne logo" class="wedding-logo">
+            <img src="slub_logo.png" alt="Ślubne logo" class="wedding-logo">
             <div class="question">
                 <div class="question-title">Jaki utwór chciałbyś/chciałabyś usłyszeć na naszym weselu?</div>
                 <p style="margin-bottom: 15px; color: var(--dark-accent); font-size: 14px;">To pytanie jest opcjonalne - możesz je pominąć.</p>
@@ -467,7 +475,7 @@
 
         <!-- Step 5 -->
         <div class="form-step" data-step="5">
-            <img src="slub_logo.svg" alt="Ślubne logo" class="wedding-logo">
+            <img src="slub_logo.png" alt="Ślubne logo" class="wedding-logo">
             <div class="question">
                 <div class="question-title">Czy na weselu pojawisz się z dziećmi?</div>
                 <div class="radio-group">
@@ -492,7 +500,7 @@
 
         <!-- Step 6 -->
         <div class="form-step" data-step="6">
-            <img src="slub_logo.svg" alt="Ślubne logo" class="wedding-logo">
+            <img src="slub_logo.png" alt="Ślubne logo" class="wedding-logo">
             <div class="question">
                 <div class="question-title">Czy potrzebujesz transportu z kościoła do Żarnowca (miejsce wesela)?</div>
                 <div class="radio-group">
@@ -517,7 +525,7 @@
 
         <!-- Step 7 -->
         <div class="form-step" data-step="7">
-            <img src="slub_logo.svg" alt="Ślubne logo" class="wedding-logo">
+            <img src="slub_logo.png" alt="Ślubne logo" class="wedding-logo">
             <div class="question">
                 <div class="question-title">Czy potrzebujesz transportu z Żarnowca (miejsce wesela) do Trójmiasta?</div>
                 <div class="radio-group">
@@ -542,7 +550,7 @@
 
         <!-- Step 8 -->
         <div class="form-step" data-step="8">
-            <img src="slub_logo.svg" alt="Ślubne logo" class="wedding-logo">
+            <img src="slub_logo.png" alt="Ślubne logo" class="wedding-logo">
             <div class="question">
                 <div class="question-title">Czy potrzebujesz noclegu w Żarnowcu po przyjęciu weselnym?</div>
                 <div class="radio-group">
@@ -567,13 +575,13 @@
     </form>
 
     <div id="successMessage" class="success-message" style="display: none;">
-        <img src="slub_logo.svg" alt="Ślubne logo" class="wedding-logo">
+        <img src="slub_logo.png" alt="Ślubne logo" class="wedding-logo">
         <h2>Dziękujemy za wypełnienie formularza!</h2>
         <p>Już nie możemy się doczekać na wspólne świętowanie!</p>
     </div>
 
     <div id="regretSuccessMessage" class="success-message" style="display: none;">
-        <img src="slub_logo.svg" alt="Ślubne logo" class="wedding-logo">
+        <img src="slub_logo.png" alt="Ślubne logo" class="wedding-logo">
         <h2>Dziękujemy za informację!</h2>
         <p>Szkoda! Będzie nam Ciebie brakować.</p>
     </div>
